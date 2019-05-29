@@ -1,15 +1,24 @@
 package com.tdd.exemplo.tddspringboot.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pessoa {
     private Long codigo;
     private String nome;
     private String cpf;
-    private List<Endereco> enderecos;
+    private List<Endereco> enderecos = new ArrayList<>();
+    private List<Telefone> telefones = new ArrayList<>();
 
 
-    private List<Telefone> telefones;
+    public Pessoa() {
+    }
+
+    public Pessoa(  String nome, String cpf) {
+
+        this.nome = nome;
+        this.cpf = cpf;
+    }
 
     public Long getCodigo() {
         return codigo;
