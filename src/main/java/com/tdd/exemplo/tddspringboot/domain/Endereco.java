@@ -1,6 +1,13 @@
 package com.tdd.exemplo.tddspringboot.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "endereco")
 public class Endereco {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     private String logradouro;
     private Integer numero;
@@ -8,8 +15,10 @@ public class Endereco {
     private String bairro;
     private String cidade;
     private String estado;
-    private Pessoa pessoa;
 
+    @ManyToOne
+    @JoinColumn(name = "codigo_pessoa")
+    private Pessoa pessoa;
 
 
     public String getLogradouro() {

@@ -1,13 +1,29 @@
 package com.tdd.exemplo.tddspringboot.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(
+        name = "pessoa",
+        uniqueConstraints = @UniqueConstraint(columnNames = "cpf", name = "pessoa_cpf_uk")
+)
 public class Pessoa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
+
+    @Column(length = 80, nullable = false)
     private String nome;
+
+    @Column(length = 11, nullable = false)
     private String cpf;
+
+    @OneToMany(mappedBy = "pessoa")
     private List<Endereco> enderecos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pessoa")
     private List<Telefone> telefones = new ArrayList<>();
 
 
