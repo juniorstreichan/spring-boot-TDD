@@ -8,8 +8,13 @@ public class Telefone {
     private String ddd;
 
     private String numero;
- 
+
     private Pessoa pessoa;
+
+    public Telefone(String ddd, String numero) {
+        this.ddd = ddd;
+        this.numero = numero;
+    }
 
     public Long getCodigo() {
         return codigo;

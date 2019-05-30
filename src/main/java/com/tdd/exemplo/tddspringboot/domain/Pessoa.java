@@ -14,7 +14,7 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    public Pessoa(  String nome, String cpf) {
+    public Pessoa(String nome, String cpf) {
 
         this.nome = nome;
         this.cpf = cpf;
@@ -54,6 +54,14 @@ public class Pessoa {
 
     public List<Telefone> getTelefones() {
         return telefones;
+    }
+
+    public Telefone getTelefone(final int index) {
+        return this.telefones.get(index);
+    }
+
+    public boolean addTelefone(Telefone telefone) {
+        return this.telefones.add(telefone);
     }
 
     public void setTelefones(List<Telefone> telefones) {
