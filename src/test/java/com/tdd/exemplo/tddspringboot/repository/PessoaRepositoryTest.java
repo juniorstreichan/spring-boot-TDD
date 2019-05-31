@@ -24,7 +24,7 @@ public class PessoaRepositoryTest {
 
 
     @Test
-    public void deveBuscarPessoaPorCpf() {
+    public void deveEncontrarPessoaPorCpf() {
         Optional<Pessoa> optional = sut.findByCpf("72788740417");
 
         Assertions.assertThat(optional.isPresent()).isTrue();
@@ -38,6 +38,25 @@ public class PessoaRepositoryTest {
     @Test
     public void naoDeveEncontrarPessoaSemCpf() {
         Optional<Pessoa> optional = sut.findByCpf("72788740400");
+        Assertions.assertThat(optional.isPresent()).isFalse();
+    }
+
+    @Test
+    public void deveEncontrarPessoaPeloDddENumeroDeTelefone() {
+        Optional<Pessoa> optional = sut.findByTelefoneDddAndTelefoneNumero("41", "999570146");
+
+        Assertions.assertThat(optional.isPresent()).isTrue();
+
+        Pessoa pessoa = optional.get();
+
+        Assertions.assertThat(pessoa.getNome()).isEqualTo("Iago");
+        Assertions.assertThat(pessoa.getCpf()).isEqualTo("86730543540");
+    }
+
+    @Test
+    public void naoDeveEncontrarPorDddETelefoneNaoCadastrado() {
+        Optional<Pessoa> optional = sut.findByTelefoneDddAndTelefoneNumero("99", "999999999");
+
         Assertions.assertThat(optional.isPresent()).isFalse();
     }
 }
