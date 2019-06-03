@@ -1,11 +1,13 @@
 package com.tdd.exemplo.tddspringboot.repository;
 
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
+import com.tdd.exemplo.tddspringboot.repository.helper.IPessoaRepositoryQueries;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +31,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     where telefones1_.ddd=? and telefones1_.numero=?
     */
 //    Optional<Pessoa> findByTelefonesDddAndTelefonesNumero(String ddd, String numero);
+
+    Collection<Pessoa> findByNomeLike(String name);
 }

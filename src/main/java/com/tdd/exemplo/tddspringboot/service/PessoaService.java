@@ -3,18 +3,31 @@ package com.tdd.exemplo.tddspringboot.service;
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.domain.Telefone;
 import com.tdd.exemplo.tddspringboot.repository.PessoaRepository;
+import com.tdd.exemplo.tddspringboot.repository.filtros.PessoaFiltro;
 import com.tdd.exemplo.tddspringboot.service.exception.PessoaNotFoundException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueCpfException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
 import com.tdd.exemplo.tddspringboot.service.interfaces.IPessoaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PessoaService implements IPessoaService {
-    private final PessoaRepository pessoaRepository;
+
+    @PersistenceContext
+    private EntityManager manager;
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
 
     public PessoaService(PessoaRepository pessoaRepository) {
-        this.pessoaRepository = pessoaRepository;
+
     }
 
     @Override
@@ -38,4 +51,14 @@ public class PessoaService implements IPessoaService {
         Optional<Pessoa> pessoaOptional = pessoaRepository.findByTelefoneDddAndTelefoneNumero(telefone.getDdd(), telefone.getNumero());
         return pessoaOptional.orElseThrow(() -> new PessoaNotFoundException());
     }
+
+    public List<Pessoa> filtrar(PessoaFiltro filtro) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT bean FROM Pessoa bean WHERE 1=1 ");
+//        sb.append("");
+        return manager.createQuery(sb.toString(), Pessoa.class).getResultList();
+
+    }
+
+
 }
