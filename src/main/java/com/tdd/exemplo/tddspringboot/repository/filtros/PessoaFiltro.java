@@ -2,10 +2,10 @@ package com.tdd.exemplo.tddspringboot.repository.filtros;
 
 public class PessoaFiltro {
 
-    private String nome;
-    private String cpf;
-    private String ddd;
-    private String telefone;
+    private String nome = "";
+    private String cpf = "";
+    private String ddd = "";
+    private String telefone = "";
 
     public PessoaFiltro() {
     }
@@ -47,5 +47,9 @@ public class PessoaFiltro {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public boolean isValid() {
+        return !nome.equals("") || !cpf.equals("") || !ddd.equals("") || !telefone.equals("");
     }
 }

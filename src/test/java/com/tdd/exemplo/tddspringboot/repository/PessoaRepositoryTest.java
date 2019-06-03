@@ -83,4 +83,32 @@ public class PessoaRepositoryTest {
 
         Assertions.assertThat(pessoas.size()).isEqualTo(3);
     }
+
+    @Test
+    public void deveFiltrarPessoasPorFiltroComposto() {
+        PessoaFiltro filtro = new PessoaFiltro();
+        filtro.setNome("a");
+        filtro.setCpf("78");
+        Collection<Pessoa> pessoas = pessoaRepositoryQueries.filtrar(filtro);
+
+        Assertions.assertThat(pessoas.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void deveFiltrarPessoasPeloDdd() {
+        PessoaFiltro filtro = new PessoaFiltro();
+        filtro.setDdd("21");
+        Collection<Pessoa> pessoas = pessoaRepositoryQueries.filtrar(filtro);
+
+        Assertions.assertThat(pessoas.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void deveFiltrarPessoasPeloTelefone() {
+        PessoaFiltro filtro = new PessoaFiltro();
+        filtro.setTelefone("99999");
+        Collection<Pessoa> pessoas = pessoaRepositoryQueries.filtrar(filtro);
+
+        Assertions.assertThat(pessoas.size()).isEqualTo(0);
+    }
 }
