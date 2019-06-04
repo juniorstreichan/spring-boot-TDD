@@ -9,6 +9,7 @@ import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
 import com.tdd.exemplo.tddspringboot.service.interfaces.IPessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class PessoaService implements IPessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
+    @Transactional
     @Override
     public Pessoa salvar(final Pessoa pessoa) throws UniqueCpfException, UniqueTelephoneException {
         Optional<Pessoa> pessoaCpfOptional = pessoaRepository.findByCpf(pessoa.getCpf());
@@ -37,6 +39,7 @@ public class PessoaService implements IPessoaService {
         return pessoaRepository.save(pessoa);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pessoa buscarPorTelefone(final Telefone telefone) throws PessoaNotFoundException {
         Optional<Pessoa> pessoaOptional = pessoaRepository.findByTelefoneDddAndTelefoneNumero(telefone.getDdd(), telefone.getNumero());

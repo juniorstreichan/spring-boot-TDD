@@ -1,7 +1,11 @@
 package com.tdd.exemplo.tddspringboot.resource;
 
 import com.tdd.exemplo.tddspringboot.TddSpringbootApplicationTests;
+import com.tdd.exemplo.tddspringboot.domain.Endereco;
+import com.tdd.exemplo.tddspringboot.domain.Pessoa;
+import com.tdd.exemplo.tddspringboot.domain.Telefone;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -29,4 +33,69 @@ public class PessoaResourceTest extends TddSpringbootApplicationTests {
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .body("message", Matchers.notNullValue());
     }
+
+    @Test
+    public void deveSalvarNovaPessoa() {
+        final Pessoa pessoa = new Pessoa();
+        pessoa.setNome("Cláudio Daniel Moraes");
+        pessoa.setCpf("22612078592");
+        pessoa.addTelefone(new Telefone("67", "8635197671"));
+
+        Endereco endereco = new Endereco();
+        endereco.setCidade("Timon");
+        endereco.setEstado("MA");
+        endereco.setNumero(570);
+//        endereco.setPessoa(pessoa);
+        endereco.setLogradouro("Rua Dois");
+
+        pessoa.addEndereco(endereco);
+
+        RestAssured.given()
+                .request()
+                .header("Accept", ContentType.ANY)
+                .header("Content-type", ContentType.JSON)
+                .body(pessoa)
+                .post("/pessoas")
+                .then()
+                .log().headers()
+                .and()
+                .log().body()
+                .and().statusCode(HttpStatus.CREATED.value())
+                .header("Location", Matchers.notNullValue())
+                .body(
+                        "codigo", Matchers.notNullValue(),
+                        "nome", Matchers.equalTo(pessoa.getNome()),
+                        "cpf", Matchers.equalTo(pessoa.getCpf())
+                );
+    }
 }
+/*
+
+{
+	"nome": "Cláudio Daniel Moraes",
+	"idade": 44,
+	"cpf": "22612078592",
+	"rg": "148178959",
+	"data_nasc": "21\/11\/1975",
+	"signo": "Escorpião",
+	"mae": "Fabiana Sara ",
+	"pai": "Pietro Daniel Lorenzo Moraes",
+	"email": "claudiodanielmoraes__claudiodanielmoraes@oxiteno.com",
+	"senha": "Bw6q4NsnCP",
+	"cep": "65636814",
+	"endereco": "Rua Dois",
+	"numero": 570,
+	"bairro": "Boa Esperança",
+	"cidade": "Timon",
+	"estado": "MA",
+	"telefone_fixo": "8635197671",
+	"celular": "86996390657",
+	"altura": "1,89",
+	"peso": 86,
+	"tipo_sanguineo": "A-",
+	"cor": "azul"
+}
+
+
+
+*/

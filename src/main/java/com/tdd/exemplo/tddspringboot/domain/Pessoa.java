@@ -68,6 +68,10 @@ public class Pessoa {
         this.enderecos = enderecos;
     }
 
+    public boolean addEndereco(Endereco endereco){
+        return this.enderecos.add(endereco);
+    }
+
     public List<Telefone> getTelefones() {
         return telefones;
     }
