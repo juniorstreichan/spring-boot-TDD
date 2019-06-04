@@ -7,12 +7,16 @@ import com.tdd.exemplo.tddspringboot.service.exception.PessoaNotFoundException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueCpfException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
 import com.tdd.exemplo.tddspringboot.service.interfaces.IPessoaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class PessoaService implements IPessoaService {
     private final PessoaRepository pessoaRepository;
 
+    @Autowired
     public PessoaService(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
     }
@@ -36,6 +40,6 @@ public class PessoaService implements IPessoaService {
     @Override
     public Pessoa buscarPorTelefone(final Telefone telefone) throws PessoaNotFoundException {
         Optional<Pessoa> pessoaOptional = pessoaRepository.findByTelefoneDddAndTelefoneNumero(telefone.getDdd(), telefone.getNumero());
-        return pessoaOptional.orElseThrow(() -> new PessoaNotFoundException());
+        return pessoaOptional.orElseThrow(PessoaNotFoundException::new);
     }
 }

@@ -1,5 +1,7 @@
 package com.tdd.exemplo.tddspringboot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,9 +18,13 @@ public class Telefone {
     @Column(length = 9, nullable = false)
     private String numero;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "codigo_pessoa")
     private Pessoa pessoa;
+
+    public Telefone() {
+    }
 
     public Telefone(String ddd, String numero) {
         this.ddd = ddd;
