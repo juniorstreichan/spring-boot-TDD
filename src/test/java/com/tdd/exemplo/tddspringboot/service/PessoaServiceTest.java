@@ -3,6 +3,7 @@ package com.tdd.exemplo.tddspringboot.service;
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.domain.Telefone;
 import com.tdd.exemplo.tddspringboot.repository.PessoaRepository;
+import com.tdd.exemplo.tddspringboot.repository.helper.IPessoaRepositoryQueries;
 import com.tdd.exemplo.tddspringboot.service.exception.PessoaNotFoundException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueCpfException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
@@ -29,6 +30,8 @@ public class PessoaServiceTest {
 
     @MockBean
     private PessoaRepository pessoaRepository;
+    @MockBean
+    private IPessoaRepositoryQueries queries;
     private IPessoaService sut;
 
     private Pessoa pessoa;
@@ -36,7 +39,7 @@ public class PessoaServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        sut = new PessoaService(pessoaRepository);
+        sut = new PessoaService(pessoaRepository,queries);
 
         pessoa = new Pessoa(
                 NOME,

@@ -2,6 +2,7 @@ package com.tdd.exemplo.tddspringboot.resource;
 
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.domain.Telefone;
+import com.tdd.exemplo.tddspringboot.repository.filtros.PessoaFiltro;
 import com.tdd.exemplo.tddspringboot.service.exception.PessoaNotFoundException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueCpfException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -20,6 +22,18 @@ public class PessoaResource {
 
     @Autowired
     private IPessoaService pessoaService;
+
+    @GetMapping
+    public ResponseEntity<Collection<Pessoa>> filter(
+            @RequestParam(name = "nome", defaultValue = "") String nome,
+            @RequestParam(name = "cpf", defaultValue = "") String cpf,
+            @RequestParam(name = "ddd", defaultValue = "") String ddd,
+            @RequestParam(name = "telefone", defaultValue = "") String telefone
+    ) throws Exception {
+        PessoaFiltro filtro = new PessoaFiltro(nome, cpf, ddd, telefone);
+        Collection<Pessoa> pessoas = pessoaService.filtrar(filtro);
+        return ResponseEntity.ok().body(pessoas);
+    }
 
     @GetMapping("/{ddd}/{numero}")
     public ResponseEntity<Pessoa> findByTelephone(

@@ -2,15 +2,14 @@ package com.tdd.exemplo.tddspringboot.repository.helper;
 
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.repository.filtros.PessoaFiltro;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PessoaRepositoryQueries implements IPessoaRepositoryQueries {
@@ -19,7 +18,7 @@ public class PessoaRepositoryQueries implements IPessoaRepositoryQueries {
     private EntityManager manager;
 
     @Override
-    public List<Pessoa> filtrar(PessoaFiltro filtro) {
+    public Collection<Pessoa> filtrar(PessoaFiltro filtro) {
         if (filtro.isValid()) {
 
             final StringBuilder sb = new StringBuilder();

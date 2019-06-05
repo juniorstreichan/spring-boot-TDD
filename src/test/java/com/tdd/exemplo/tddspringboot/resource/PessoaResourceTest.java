@@ -4,6 +4,7 @@ import com.tdd.exemplo.tddspringboot.TddSpringbootApplicationTests;
 import com.tdd.exemplo.tddspringboot.domain.Endereco;
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.domain.Telefone;
+import com.tdd.exemplo.tddspringboot.repository.filtros.PessoaFiltro;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
@@ -121,5 +122,22 @@ public class PessoaResourceTest extends TddSpringbootApplicationTests {
                 .then().log().body()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .and().body("message", Matchers.notNullValue());
+    }
+
+    @Test
+    public void deveFiltrarPessoasPeloNome() {
+        PessoaFiltro filtro = new PessoaFiltro();
+        filtro.setNome("a");
+
+        RestAssured.given()
+                .request()
+                .header("Accept", ContentType.ANY)
+                .header("Content-type", ContentType.JSON)
+                .queryParam("nome", filtro.getNome())
+                .get("/pessoas")
+                .then()
+                .log().body()
+                .and().statusCode(HttpStatus.OK.value())
+                .body(Matchers.notNullValue());
     }
 }

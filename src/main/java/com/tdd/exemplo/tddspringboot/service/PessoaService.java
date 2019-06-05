@@ -3,6 +3,8 @@ package com.tdd.exemplo.tddspringboot.service;
 import com.tdd.exemplo.tddspringboot.domain.Pessoa;
 import com.tdd.exemplo.tddspringboot.domain.Telefone;
 import com.tdd.exemplo.tddspringboot.repository.PessoaRepository;
+import com.tdd.exemplo.tddspringboot.repository.filtros.PessoaFiltro;
+import com.tdd.exemplo.tddspringboot.repository.helper.IPessoaRepositoryQueries;
 import com.tdd.exemplo.tddspringboot.service.exception.PessoaNotFoundException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueCpfException;
 import com.tdd.exemplo.tddspringboot.service.exception.UniqueTelephoneException;
@@ -11,15 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
 public class PessoaService implements IPessoaService {
     private final PessoaRepository pessoaRepository;
 
+    private final IPessoaRepositoryQueries queries;
+
     @Autowired
-    public PessoaService(PessoaRepository pessoaRepository) {
+    public PessoaService(PessoaRepository pessoaRepository, IPessoaRepositoryQueries queries) {
         this.pessoaRepository = pessoaRepository;
+        this.queries = queries;
     }
 
     @Transactional
@@ -49,5 +55,10 @@ public class PessoaService implements IPessoaService {
                         "Não existe pessoa com o telefone (" + telefone.getDdd() + ") " + telefone.getNumero()
                 )
         );
+    }
+
+    @Override
+    public Collection<Pessoa> filtrar(PessoaFiltro filtro) {
+        return queries.filtrar(filtro);
     }
 }
