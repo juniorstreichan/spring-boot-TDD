@@ -68,34 +68,58 @@ public class PessoaResourceTest extends TddSpringbootApplicationTests {
                         "cpf", Matchers.equalTo(pessoa.getCpf())
                 );
     }
+
+    @Test
+    public void naoDeveSalvarPessoaComOMesmoCpf() {
+        final Pessoa pessoa = new Pessoa();
+        pessoa.setNome("Cláudio Daniel Moraes");
+        pessoa.setCpf("38767897100");
+        pessoa.addTelefone(new Telefone("67", "8635197671"));
+
+        Endereco endereco = new Endereco();
+        endereco.setCidade("Timon");
+        endereco.setEstado("MA");
+        endereco.setNumero(570);
+//        endereco.setPessoa(pessoa);
+        endereco.setLogradouro("Rua Dois");
+
+        pessoa.addEndereco(endereco);
+
+        RestAssured.given()
+                .request()
+                .header("Accept", ContentType.ANY)
+                .header("Content-type", ContentType.JSON)
+                .body(pessoa)
+                .post("/pessoas")
+                .then().log().body()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .and().body("message", Matchers.notNullValue());
+    }
+
+    @Test
+    public void naoDeveSalvarPessoaComOMesmoTelefone() {
+        final Pessoa pessoa = new Pessoa();
+        pessoa.setNome("Cláudio Daniel Moraes");
+        pessoa.setCpf("38767897100");
+        pessoa.addTelefone(new Telefone("41", "999570146"));
+
+        Endereco endereco = new Endereco();
+        endereco.setCidade("Timon");
+        endereco.setEstado("MA");
+        endereco.setNumero(570);
+//        endereco.setPessoa(pessoa);
+        endereco.setLogradouro("Rua Dois");
+
+        pessoa.addEndereco(endereco);
+
+        RestAssured.given()
+                .request()
+                .header("Accept", ContentType.ANY)
+                .header("Content-type", ContentType.JSON)
+                .body(pessoa)
+                .post("/pessoas")
+                .then().log().body()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .and().body("message", Matchers.notNullValue());
+    }
 }
-/*
-
-{
-	"nome": "Cláudio Daniel Moraes",
-	"idade": 44,
-	"cpf": "22612078592",
-	"rg": "148178959",
-	"data_nasc": "21\/11\/1975",
-	"signo": "Escorpião",
-	"mae": "Fabiana Sara ",
-	"pai": "Pietro Daniel Lorenzo Moraes",
-	"email": "claudiodanielmoraes__claudiodanielmoraes@oxiteno.com",
-	"senha": "Bw6q4NsnCP",
-	"cep": "65636814",
-	"endereco": "Rua Dois",
-	"numero": 570,
-	"bairro": "Boa Esperança",
-	"cidade": "Timon",
-	"estado": "MA",
-	"telefone_fixo": "8635197671",
-	"celular": "86996390657",
-	"altura": "1,89",
-	"peso": 86,
-	"tipo_sanguineo": "A-",
-	"cor": "azul"
-}
-
-
-
-*/

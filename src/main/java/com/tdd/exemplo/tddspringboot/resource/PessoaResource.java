@@ -51,6 +51,16 @@ public class PessoaResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Erro(e.getMessage()));
     }
 
+    @ExceptionHandler({UniqueCpfException.class})
+    public ResponseEntity<Erro> handleError(UniqueCpfException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Erro(e.getMessage()));
+    }
+
+    @ExceptionHandler({UniqueTelephoneException.class})
+    public ResponseEntity<Erro> handleError(UniqueTelephoneException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Erro(e.getMessage()));
+    }
+
     class Erro {
         private final String message;
 

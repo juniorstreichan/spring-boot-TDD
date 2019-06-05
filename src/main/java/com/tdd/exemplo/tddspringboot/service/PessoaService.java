@@ -27,14 +27,16 @@ public class PessoaService implements IPessoaService {
     public Pessoa salvar(final Pessoa pessoa) throws UniqueCpfException, UniqueTelephoneException {
         Optional<Pessoa> pessoaCpfOptional = pessoaRepository.findByCpf(pessoa.getCpf());
 
-        if (pessoaCpfOptional.isPresent()) throw new UniqueCpfException();
+        if (pessoaCpfOptional.isPresent())
+            throw new UniqueCpfException("Já existe pessoa cadastrada com o CPF '" + pessoa.getCpf() + "'");
 
         Optional<Pessoa> pessoaTelephoneOptional = pessoaRepository.findByTelefoneDddAndTelefoneNumero(
                 pessoa.getTelefone(0).getDdd(),
                 pessoa.getTelefone(0).getNumero()
         );
 
-        if (pessoaTelephoneOptional.isPresent()) throw new UniqueTelephoneException();
+        if (pessoaTelephoneOptional.isPresent())
+            throw new UniqueTelephoneException("Este telefone já está cadastrado");
 
         return pessoaRepository.save(pessoa);
     }
